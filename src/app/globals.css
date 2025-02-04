@@ -14,6 +14,10 @@
   }
 }
 
+.wallet-adapter-button-trigger {
+  @apply !bg-primary !rounded-full !font-spaceGrotesk !text-[20px]
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
