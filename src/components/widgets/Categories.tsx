@@ -31,13 +31,13 @@ const CategoryScroll = () => {
     <div className="relative w-full overflow-hidden p-4 hide-scrollbar">
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth"
+        className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth hide-scrollbar py-2"
       >
         {eventCategories.map((category, index) => (
           <motion.div
             key={index}
             whileHover={{ scale: 1.05 }}
-            className="flex-shrink-0 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-full shadow-lg cursor-pointer transition-transform duration-300"
+            className="flex-shrink-0 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 text-white px-6 py-3 rounded-full shadow-lg cursor-pointer transition-transform duration-300"
           >
             {category}
           </motion.div>

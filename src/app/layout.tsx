@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import  { Wallet } from "@/context/WalletProvider";
+import Footer from "@/components/widgets/Footer";
 
 const spaceGro = Space_Grotesk({
   variable: "--font-space-gro",
@@ -31,7 +32,7 @@ export default function RootLayout({
         <Wallet>
           {children}
         </Wallet>
-        
+        <Footer />
       </body>
     </html>
   );
