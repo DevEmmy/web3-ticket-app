@@ -32,7 +32,6 @@ export default function RootLayout({
         <Wallet>
           {children}
         </Wallet>
-        <Footer />
       </body>
     </html>
   );

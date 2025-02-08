@@ -31,3 +31,23 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+@keyframes floating {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes floating-slow {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-floating {
+  animation: floating 6s infinite ease-in-out;
+}
+
+.animate-floating-slow {
+  animation: floating-slow 10s infinite ease-in-out;
+}

@@ -6,6 +6,7 @@ import EventInMyLocation from '../widgets/homepage/EventInMyLocation'
 import CategoryScroll from '../widgets/Categories'
 import EventSearch from '../widgets/EventSearch'
 import FloatingBalls from '../widgets/FloatingBalls'
+import Footer from '../widgets/Footer'
 
 const HomePage = () => {
   return (
@@ -17,7 +18,7 @@ const HomePage = () => {
       <EventSearch />
       <TopEvents />
       <EventInMyLocation />
-
+      <Footer />
     </div>
   )
 }

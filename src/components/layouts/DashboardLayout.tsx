@@ -4,6 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Bell, User, LogOut } from "lucide-react";
+import WalletFormatter from "../utils/wallet-formatter";
+import { useWallet } from "@solana/wallet-adapter-react";
+import AnimatedBackground from "../ui/AnimatedBackground";
 
 const sidebarLinks = [
   { name: "Dashboard", path: "/dashboard" },
@@ -21,34 +24,44 @@ export default function DashboardLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const pathname = usePathname();
 
+  const {publicKey} = useWallet();
+
   return (
     <div className="flex h-screen">
+      {/* <AnimatedBackground /> */}
       {/* Sidebar */}
       <aside
         className={`bg-[#111] text-white w-64 p-5 transition-all ${
           isSidebarOpen ? "block" : "hidden"
         } sm:block`}
       >
-        <h2 className="text-xl font-bold mb-5">🎟️ Event Manager</h2>
-        <nav>
-          {sidebarLinks.map((link) => (
-            <Link key={link.path} href={link.path}>
-              <div
-                className={`p-3 my-2 rounded-lg transition ${
-                  pathname === link.path ? "bg-[#222]" : "hover:bg-[#222]"
-                }`}
-              >
-                {link.name}
-              </div>
-            </Link>
-          ))}
-        </nav>
+        <Link href={"/"} className="text-xl font-bold mb-5">EventFi</Link>
+        <div className="flex flex-col justify-between gap-20 my-10">
+          <nav>
+            {sidebarLinks.map((link) => (
+              <Link key={link.path} href={link.path}>
+                <div
+                  className={`p-3 my-2 rounded-lg transition ${
+                    pathname === link.path ? "bg-[#222]" : "hover:bg-[#222]"
+                  }`}
+                >
+                  {link.name}
+                </div>
+              </Link>
+            ))}
+          </nav>
+
+          <p className="flex items-center p-3 gap-2 cursor-pointer">
+            Logout 
+            <LogOut className="cursor-pointer text-red-400" size={20} />
+          </p>
+        </div>
       </aside>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Top Navbar */}
-        <header className="bg-[#222] text-white px-5 py-3 flex justify-between items-center">
+        <header className="bg-[#222] text-white px-5 py-5 flex justify-between items-center">
           <button
             className="sm:hidden text-white"
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -56,10 +69,9 @@ export default function DashboardLayout({
             <Menu size={24} />
           </button>
 
-          <div className="flex items-center gap-4">
-            <Bell className="cursor-pointer" size={20} />
-            <User className="cursor-pointer" size={20} />
-            <LogOut className="cursor-pointer text-red-400" size={20} />
+            
+          <div className="flex justify-end">
+            <WalletFormatter publicKey={publicKey?.toString() || ""} />
           </div>
         </header>
 

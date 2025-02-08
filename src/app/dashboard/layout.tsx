@@ -1,7 +1,11 @@
 import DashboardLayout from '@/components/layouts/DashboardLayout'
-import React from 'react'
+import React, { FC } from 'react'
 
-const layout = ({children}) => {
+interface Props{
+  children: React.ReactNode
+}
+
+const layout : FC<Props> = ({children}) => {
   return (
     <DashboardLayout>
         {children}
