@@ -51,3 +51,7 @@ body {
 .animate-floating-slow {
   animation: floating-slow 10s infinite ease-in-out;
 }
+
+form > input, select{
+  @apply w-full
+}

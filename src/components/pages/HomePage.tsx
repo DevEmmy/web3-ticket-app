@@ -18,7 +18,6 @@ const HomePage = () => {
       <EventSearch />
       <TopEvents />
       <EventInMyLocation />
-      <Footer />
     </div>
   )
 }

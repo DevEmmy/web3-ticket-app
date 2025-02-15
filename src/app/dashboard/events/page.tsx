@@ -1,5 +1,6 @@
 "use client";
 import { PlusCircle, Pencil, Trash, Eye } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 const events = [
@@ -16,9 +17,9 @@ export default function DashboardEvents() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Manage Events</h1>
-        <button className="bg-primary px-4 py-2 flex items-center gap-2 rounded-md">
+        <Link href="/dashboard/events/create" className="bg-primary px-4 py-2 flex items-center gap-2 rounded-md">
           <PlusCircle size={20} /> Create Event
-        </button>
+        </Link>
       </div>
 
       {/* Search & Filter */}
