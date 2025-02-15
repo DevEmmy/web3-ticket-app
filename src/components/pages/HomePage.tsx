@@ -12,7 +12,7 @@ const HomePage = () => {
   return (
     <div className='px-[5%] flex flex-col gap-20'>
       <FloatingBalls />
-      <Nav />
+      
       <Banner />
       <CategoryScroll />
       <EventSearch />

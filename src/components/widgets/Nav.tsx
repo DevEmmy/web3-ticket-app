@@ -25,7 +25,7 @@ const Nav = () => {
 
   const {publicKey, connect, disconnect} = useWallet();
   return (
-    <div className="font-spaceGrotesk py-5 flex items-center justify-between text-[18px]">
+    <div className="font-spaceGrotesk py-5 flex items-center justify-between text-[18px] mx-[5%]">
       <div className="flex items-center gap-0 flex-1">
         {navItems.map((item, i) => {
           return (

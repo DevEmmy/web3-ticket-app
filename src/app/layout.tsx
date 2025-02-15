@@ -3,6 +3,7 @@ import { DM_Sans, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import  { Wallet } from "@/context/WalletProvider";
 import Footer from "@/components/widgets/Footer";
+import { Toaster } from "react-hot-toast";
 
 const spaceGro = Space_Grotesk({
   variable: "--font-space-gro",
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${spaceGro.variable} ${dmSans.variable} antialiased`}
       >
         <Wallet>
+          <Toaster />
           {children}
         </Wallet>
       </body>
