@@ -2,13 +2,13 @@ import { FaTwitter, FaDiscord, FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="relative mt-20 bg-black text-white py-10 px-6 md:px-16">
+    <footer className="relative bg-black text-white py-10 px-6 md:px-16">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-        
+
         {/* Logo & Name */}
         <div className="text-2xl font-semibold tracking-wide flex items-center gap-2">
           <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">
-          EventFi
+            EventFi
           </span>
         </div>
 
