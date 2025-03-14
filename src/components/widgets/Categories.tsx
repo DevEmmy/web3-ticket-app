@@ -37,7 +37,7 @@ const CategoryScroll = () => {
           <motion.div
             key={index}
             whileHover={{ scale: 1.05 }}
-            className="flex-shrink-0 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 text-white px-6 py-3 rounded-full shadow-lg cursor-pointer transition-transform duration-300"
+            className="flex-shrink-0 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 text-white px-3 md:px-6 py-2 md:py-3 rounded-full shadow-lg cursor-pointer transition-transform duration-300"
           >
             {category}
           </motion.div>
