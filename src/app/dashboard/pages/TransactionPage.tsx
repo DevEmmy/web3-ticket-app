@@ -20,31 +20,31 @@ export default function TransactionsPage() {
   const [selectedTransaction, setSelectedTransaction] = useState<any>(null);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold text-white mb-4">Transactions</h1>
-      <p className="text-gray-400 mb-6">View all your ticket purchases and earnings in one place.</p>
+    <div className="p-4 md:p-6">
+      <h1 className="text-xl md:text-2xl font-bold text-white mb-2 md:mb-4">Transactions</h1>
+      <p className="text-gray-400 mb-4 md:mb-6 text-sm md:text-base">View all your ticket purchases and earnings in one place.</p>
 
-      <div className="bg-gray-900 p-4 rounded-lg">
-        <table className="w-full text-white">
+      <div className="bg-gray-900 p-3 md:p-4 rounded-lg overflow-x-auto -mx-4 md:mx-0">
+        <table className="min-w-full text-white text-sm md:text-base">
           <thead>
             <tr className="border-b border-gray-700 text-left">
-              <th className="p-2">Date</th>
-              <th className="p-2">Event</th>
-              <th className="p-2">Amount</th>
-              <th className="p-2">Status</th>
-              <th className="p-2">Action</th>
+              <th className="p-2 text-xs md:text-sm">Date</th>
+              <th className="p-2 text-xs md:text-sm">Event</th>
+              <th className="p-2 text-xs md:text-sm">Amount</th>
+              <th className="p-2 text-xs md:text-sm">Status</th>
+              <th className="p-2 text-xs md:text-sm">Action</th>
             </tr>
           </thead>
           <tbody>
             {transactions.map((tx) => (
               <tr key={tx.id} className="border-b border-gray-800">
-                <td className="p-2">{tx.date}</td>
-                <td className="p-2">{tx.event}</td>
-                <td className="p-2">{tx.amount}</td>
-                <td className="p-2">{getStatusBadge(tx.status)}</td>
-                <td className="p-2">
-                  <button className="flex gap-2 items-center" onClick={() => setSelectedTransaction(tx)}>
-                    <Eye size={16} className="text-sm" /> View
+                <td className="p-2 text-xs md:text-sm">{tx.date}</td>
+                <td className="p-2 text-xs md:text-sm">{tx.event}</td>
+                <td className="p-2 text-xs md:text-sm">{tx.amount}</td>
+                <td className="p-2 text-xs md:text-sm">{getStatusBadge(tx.status)}</td>
+                <td className="p-2 text-xs md:text-sm">
+                  <button className="flex gap-1 items-center" onClick={() => setSelectedTransaction(tx)}>
+                    <Eye size={14} className="text-xs" /> View
                   </button>
                 </td>
               </tr>
@@ -54,18 +54,18 @@ export default function TransactionsPage() {
       </div>
 
       {selectedTransaction && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-gray-900 p-6 rounded-md w-96 text-white">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50">
+          <div className="bg-gray-900 p-4 md:p-6 rounded-md w-full max-w-xs md:max-w-sm text-white">
             <h2 className="text-lg font-bold mb-3">Transaction Details</h2>
             <p><strong>Event:</strong> {selectedTransaction.event}</p>
             <p><strong>Date:</strong> {selectedTransaction.date}</p>
             <p><strong>Amount:</strong> {selectedTransaction.amount}</p>
             <p><strong>Status:</strong> {selectedTransaction.status}</p>
-            <p><strong>Transaction ID:</strong> {`0x${Math.random().toString(16).slice(2, 10)}`}</p>
-            <Button className="mt-4 w-full bg-blue-500">
+            <p className="truncate"><strong>Transaction ID:</strong> {`0x${Math.random().toString(16).slice(2, 10)}`}</p>
+            <Button className="mt-4 w-full bg-blue-500 text-sm">
               <Download size={16} className="mr-2" /> Download Receipt
             </Button>
-            <Button className="mt-2 w-full bg-red-500" onClick={() => setSelectedTransaction(null)}>Close</Button>
+            <Button className="mt-2 w-full bg-red-500 text-sm" onClick={() => setSelectedTransaction(null)}>Close</Button>
           </div>
         </div>
       )}

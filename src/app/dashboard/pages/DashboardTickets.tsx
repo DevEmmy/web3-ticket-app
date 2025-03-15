@@ -60,20 +60,17 @@ const tickets = [
 
 export default function DashboardTickets() {
   const [search, setSearch] = useState("");
-
-  const [selectedTicket, setSelectedTicket] = useState<TicketProps | null>(
-    null
-  );
+  const [selectedTicket, setSelectedTicket] = useState<TicketProps | null>(null);
 
   return (
-    <div className="bg-black text-white min-h-screen p-6">
+    <div className="bg-black text-white min-h-screen p-4 md:p-6">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Manage Tickets</h1>
+        <h1 className="text-xl md:text-2xl font-bold">Manage Tickets</h1>
       </div>
 
       {/* Search & Filter */}
-      <div className="flex gap-4 mb-4">
+      <div className="flex flex-col md:flex-row gap-4 mb-4">
         <div className="relative w-full">
           <input
             type="text"
@@ -84,7 +81,7 @@ export default function DashboardTickets() {
           />
           <Search size={18} className="absolute left-3 top-3 text-gray-400" />
         </div>
-        <select className="bg-gray-800 p-2 rounded-md text-white outline-none">
+        <select className="bg-gray-800 p-2 rounded-md text-white outline-none w-full md:w-auto">
           <option>All</option>
           <option>Valid</option>
           <option>Used</option>
@@ -93,15 +90,15 @@ export default function DashboardTickets() {
       </div>
 
       {/* Tickets Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+      <div className="overflow-x-auto -mx-4 md:mx-0">
+        <table className="min-w-full border-collapse">
           <thead>
             <tr className="bg-gray-800">
-              <th className="p-3 text-left">Ticket ID</th>
-              <th className="p-3 text-left">Event</th>
-              <th className="p-3 text-left">Buyer</th>
-              <th className="p-3 text-left">Status</th>
-              <th className="p-3 text-left">Actions</th>
+              <th className="p-2 md:p-3 text-left text-xs md:text-sm">Ticket ID</th>
+              <th className="p-2 md:p-3 text-left text-xs md:text-sm">Event</th>
+              <th className="hidden md:table-cell p-3 text-left text-xs md:text-sm">Buyer</th>
+              <th className="p-2 md:p-3 text-left text-xs md:text-sm">Status</th>
+              <th className="p-2 md:p-3 text-left text-xs md:text-sm">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -116,32 +113,33 @@ export default function DashboardTickets() {
                   key={ticket.id}
                   className="border-b border-gray-700 hover:bg-gray-900"
                 >
-                  <td className="p-3">{ticket.id}</td>
-                  <td className="p-3">{ticket.event}</td>
-                  <td className="p-3">{ticket.buyer}</td>
-                  <td className="p-3">
+                  <td className="p-2 md:p-3 text-xs md:text-sm">{ticket.id}</td>
+                  <td className="p-2 md:p-3 text-xs md:text-sm">{ticket.event}</td>
+                  <td className="hidden md:table-cell md:p-3 text-xs md:text-sm">{ticket.buyer}</td>
+                  <td className="p-2 md:p-3 text-xs md:text-sm">
                     <span
-                      className={`px-2 py-1 text-xs rounded-md ${
-                        ticket.status === "Valid"
+                      className={`px-2 py-1 text-xs rounded-md ${ticket.status === "Valid"
                           ? "bg-green-500"
                           : ticket.status === "Used"
-                          ? "bg-yellow-500"
-                          : "bg-red-500"
-                      }`}
+                            ? "bg-yellow-500"
+                            : "bg-red-500"
+                        }`}
                     >
                       {ticket.status}
                     </span>
                   </td>
-                  <td className="p-3 flex gap-2">
-                    <button className="text-blue-400">
-                      <Eye size={16} />
-                    </button>
-                    <button
-                      onClick={() => setSelectedTicket(ticket)}
-                      className="text-green-400"
-                    >
-                      <QrCode size={16} />
-                    </button>
+                  <td className="p-2 md:p-3 text-xs md:text-sm">
+                    <div className="flex gap-2">
+                      <button className="text-blue-400">
+                        <Eye size={16} />
+                      </button>
+                      <button
+                        onClick={() => setSelectedTicket(ticket)}
+                        className="text-green-400"
+                      >
+                        <QrCode size={16} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

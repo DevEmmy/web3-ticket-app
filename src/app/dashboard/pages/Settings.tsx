@@ -11,27 +11,27 @@ const Settings = () => {
   });
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-white">Settings</h1>
+    <div className="p-4 md:p-6 space-y-4 md:space-y-6">
+      <h1 className="text-xl md:text-2xl font-bold text-white">Settings</h1>
 
       {/* Profile Settings */}
-      <section className="bg-gray-800 p-4 rounded-lg">
-        <h2 className="text-xl font-semibold mb-2">Profile Settings</h2>
+      <section className="bg-gray-800 p-3 md:p-4 rounded-lg">
+        <h2 className="text-lg md:text-xl font-semibold mb-2">Profile Settings</h2>
         <div className="space-y-2">
-          <label className="block">Username</label>
-          <input type="text" className="w-full p-2 bg-gray-700 rounded" defaultValue="JohnDoe" />
-          
-          <label className="block">Email</label>
-          <input type="email" className="w-full p-2 bg-gray-700 rounded" defaultValue="johndoe@example.com" />
-          
-          <button className="mt-2 bg-blue-500 px-4 py-2 rounded text-white">Save</button>
+          <label className="block text-sm md:text-base">Username</label>
+          <input type="text" className="w-full p-2 bg-gray-700 rounded text-sm md:text-base" defaultValue="JohnDoe" />
+
+          <label className="block text-sm md:text-base">Email</label>
+          <input type="email" className="w-full p-2 bg-gray-700 rounded text-sm md:text-base" defaultValue="johndoe@example.com" />
+
+          <button className="mt-2 bg-blue-500 px-4 py-2 rounded text-white text-sm md:text-base">Save</button>
         </div>
       </section>
 
       {/* Security Settings */}
-      {/* <section className="bg-gray-800 p-4 rounded-lg">
-        <h2 className="text-xl font-semibold mb-2">Security</h2>
-        <button className="bg-red-500 px-4 py-2 rounded text-white">Change Password</button>
+      {/* <section className="bg-gray-800 p-3 md:p-4 rounded-lg">
+        <h2 className="text-lg md:text-xl font-semibold mb-2">Security</h2>
+        <button className="bg-red-500 px-4 py-2 rounded text-white text-sm md:text-base">Change Password</button>
       </section> */}
 
       {/* Notification Settings */}

@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey, Transaction, SystemProgram, Connection } from "@solana/web3.js";
-
 import { toast } from "react-hot-toast";
 import Button from "../ui/Button";
 
@@ -31,7 +29,7 @@ export default function EventDetails() {
   const [event, setEvent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
-  
+
   useEffect(() => {
     if (!slug) return;
     fetchEventBySlug(slug as string).then((data) => {
@@ -40,12 +38,12 @@ export default function EventDetails() {
     });
   }, [slug]);
 
-  if (loading) return <p className="text-white text-center py-10">Loading event details...</p>;
-  if (!event) return <p className="text-white text-center py-10">Event not found.</p>;
+  if (loading) return <p className="text-white text-center py-10 pt-28">Loading event details...</p>;
+  if (!event) return <p className="text-white text-center py-10 pt-28">Event not found.</p>;
 
   // Handle ticket purchase
   const handlePurchase = async () => {
-    
+
     if (!publicKey) {
       toast.error("Connect your wallet first!");
       console.log("Purchasing ticket...");
@@ -81,37 +79,61 @@ export default function EventDetails() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
-      {/* Event Image */}
-      <div className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden">
-        <img src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwBzcQt2uI-BHaUOo6zucN86WDdD75pOVmw&s"} alt={event.title} className="w-full h-[400px]" objectFit="cover" />
-      </div>
-
-      {/* Event Details */}
-      <div className="max-w-5xl mx-auto mt-6">
-        <h1 className="text-4xl font-bold">{event.title}</h1>
-        <p className="text-gray-400 mt-2">{event.category} - {event.location}</p>
-
-        <div className="mt-4 text-gray-300">
-          <p>{event.description}</p>
-        </div>
-
-        {/* Ticket Purchase Section */}
-        <div className="mt-6 bg-gray-900 p-4 rounded-lg flex flex-col md:flex-row justify-between items-center">
-          <div>
-            <p className="text-lg font-semibold">
-              Price: {event.price ? `${event.price} SOL` : "Free"}
-            </p>
-            {event.mintAsNFT && <p className="text-sm text-blue-400">NFT Ticket Available</p>}
+    <div className="min-h-screen text-white py-32 px-4 md:px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto">
+        {/* Event Image and Details Container */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-12">
+          {/* Event Image */}
+          <div className="lg:col-span-3 relative w-full h-[250px] sm:h-[320px] md:h-[400px] lg:h-[450px] rounded-lg overflow-hidden">
+            <img
+              src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwBzcQt2uI-BHaUOo6zucN86WDdD75pOVmw&s"}
+              alt={event.title}
+              className="w-full h-full object-cover"
+            />
           </div>
 
-          <Button 
-            onClick={handlePurchase} 
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg mt-3 md:mt-0"
-            disabled={isProcessing}
-          >
-            {isProcessing ? "Processing..." : "Get Ticket"}
-          </Button>
+          {/* Event Details - Right Side on Desktop */}
+          <div className="lg:col-span-2 flex flex-col">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">{event.title}</h1>
+            <p className="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">{event.category} - {event.location}</p>
+
+            {/* Date and Time */}
+            <div className="mt-4 border-l-4 border-primary pl-4">
+              <h3 className="text-lg md:text-xl font-semibold">Date & Time</h3>
+              <p className="text-gray-300">{new Date(event.date).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}</p>
+            </div>
+
+            {/* Ticket Purchase Section */}
+            <div className="mt-6 bg-gray-900 p-4 rounded-lg flex flex-col justify-between h-auto">
+              <div className="mb-4">
+                <p className="text-lg font-semibold">
+                  Price: {event.price ? `${event.price} SOL` : "Free"}
+                </p>
+                {event.mintAsNFT && <p className="text-sm text-blue-400 mt-1">NFT Ticket Available</p>}
+              </div>
+
+              <Button
+                onClick={handlePurchase}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-lg"
+                disabled={isProcessing}
+              >
+                {isProcessing ? "Processing..." : "Get Ticket"}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Description Section - Full Width Below */}
+        <div className="mt-8 lg:mt-12">
+          <h2 className="text-xl md:text-2xl font-semibold mb-3">Event Details</h2>
+          <div className="bg-gray-900/50 rounded-lg p-5 text-gray-300 text-sm md:text-base">
+            <p>{event.description}</p>
+          </div>
         </div>
       </div>
     </div>

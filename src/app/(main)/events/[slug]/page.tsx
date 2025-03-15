@@ -3,7 +3,9 @@ import React from 'react'
 
 const page = () => {
   return (
-    <EventDetails />
+    <div className="bg-black min-h-screen">
+      <EventDetails />
+    </div>
   )
 }
 

@@ -20,10 +20,10 @@ const EventSearch = () => {
   const [selectedLocation, setSelectedLocation] = useState(locations[0]);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: -10 }} 
-      animate={{ opacity: 1, y: 0 }} 
-      className="flex flex-col md:flex-row items-center gap-4 p-6 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg w-full max-w-2xl mx-auto"
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex flex-col md:flex-row items-center gap-4 p-6 bg-white/10 backdrop-blur-lg rounded-xl shadow-lg w-full max-w-2xl mx-auto mb-10"
     >
       {/* Search Field */}
       <div className="relative w-full">
