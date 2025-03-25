@@ -51,7 +51,7 @@ const Nav = () => {
     },
     {
       title: "About Us",
-      link: "/",
+      link: "/about",
     },
   ];
 
