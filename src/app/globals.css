@@ -55,3 +55,77 @@ body {
 form > input, select{
   @apply w-full
 }
+
+.flexbm {
+  @apply flex justify-between items-center;
+}
+.flexbs {
+  @apply flex justify-between items-start;
+}
+.flexbe {
+  @apply flex justify-between items-end;
+}
+.flexam {
+  @apply flex justify-around items-center;
+}
+.flexmm {
+  @apply flex justify-center items-center;
+}
+.flexem {
+  @apply flex justify-end items-center;
+}
+.flexme {
+  @apply flex justify-center items-end;
+}
+.flexsm {
+  @apply flex justify-start items-center;
+}
+.flexms {
+  @apply flex justify-center items-start;
+}
+.flexss {
+  @apply flex justify-start items-start;
+}
+.flexse {
+  @apply flex justify-start items-end;
+}
+.flexes {
+  @apply flex justify-end items-start;
+}
+
+.cflexbm {
+  @apply flex flex-col justify-between items-center;
+}
+.cflexbs {
+  @apply flex flex-col justify-between items-start;
+}
+.cflexbe {
+  @apply flex justify-between items-end;
+}
+.cflexam {
+  @apply flex flex-col justify-around items-center;
+}
+.cflexmm {
+  @apply flex flex-col justify-center items-center;
+}
+.cflexem {
+  @apply flex flex-col justify-end items-center;
+}
+.cflexme {
+  @apply flex flex-col justify-center items-end;
+}
+.cflexsm {
+  @apply flex flex-col justify-start items-center;
+}
+.cflexms {
+  @apply flex flex-col justify-center items-start;
+}
+.cflexss {
+  @apply flex flex-col justify-start items-start;
+}
+.cflexse {
+  @apply flex flex-col justify-start items-end;
+}
+.cflexes {
+  @apply flex flex-col justify-end items-start;
+}

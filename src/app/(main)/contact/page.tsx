@@ -39,8 +39,8 @@ export default function AboutPage() {
           className="w-full h-full md:rounded-[15px] object-cover"
         />
         <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-background/60 pt-[15px] md:p-5 text-center md:gap-[15px] md:rounded-[15px]">
-          <h1 className="text-2xl md:text-4xl font-bold mb-2 md:mb-4">
-            About Us
+          <h1 className="text-2xl md:text-5xl font-bold mb-2 md:mb-4">
+            Contact Us
           </h1>
           <p className="mb-4 md:mb-6 text-[15px] md:text-3xl">
             Empowering Events, Connecting People, Simplifying Event Management.

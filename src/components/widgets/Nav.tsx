@@ -53,6 +53,10 @@ const Nav = () => {
       title: "About Us",
       link: "/about",
     },
+    {
+      title: "Contact Us",
+      link: "/contact",
+    },
   ];
 
   const { publicKey, connect, disconnect } = useWallet();
@@ -61,7 +65,7 @@ const Nav = () => {
     <div className={`font-spaceGrotesk py-5 fixed top-0 left-0 w-full z-[999] mb-[80px] transition-shadow ${isScrolled ? 'shadow-md bg-background/90' : ''}`}>
       {/* Desktop */}
       <div className="hidden lg:flex items-center justify-between text-[18px] mx-[5%]">
-        <div className="flex items-center gap-0 flex-1">
+        <div className="flex items-center gap-0 flex-2">
           {navItems.map((item, i) => {
             return (
               <div key={i}>
