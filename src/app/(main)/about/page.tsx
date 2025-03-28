@@ -68,7 +68,7 @@ export default function AboutPage() {
             your audience.
           </p>
         </div>
-        <div className="w-full md:w-1/2 flex h-[300px] md:h-[400px] flex-col gap-[15px]">
+        <div className="w-full md:w-1/2 flex h-[300px] md:h-[450px] flex-col gap-[15px]">
           <img
             src={"./mission2.jfif"}
             alt="mission"
@@ -81,7 +81,7 @@ export default function AboutPage() {
         Our Vision
       </h1>
       <div className="w-full mt-[20px] md:mt-[50px] text-background flex flex-row-reverse md:flex-row gap-[20px] md:gap-[50px] flex-wrap md:flex-nowrap">
-        <div className="w-full md:w-1/2 flex h-[300px] md:h-[400px] flex-col gap-[15px]">
+        <div className="w-full md:w-1/2 flex h-[300px] md:h-[450px] flex-col gap-[15px]">
           <img
             src={"./vision1.jfif"}
             alt="mission"
