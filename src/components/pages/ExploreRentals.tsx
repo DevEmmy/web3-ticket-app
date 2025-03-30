@@ -21,37 +21,37 @@ const rentalItems = [
     {
       title: "LED Screens",
       description: "High-quality LED screens for presentations, concerts, and outdoor events.",
-      buttonText: "View LED Screens",
+      buttonText: "View Equipment",
     },
     {
       title: "DJ Equipment",
       description: "Premium DJ controllers, mixers, and turntables for your event.",
-      buttonText: "View DJ Equipment",
+      buttonText: "View Equipment",
     },
     {
       title: "Projectors & Screens",
       description: "Full HD projectors and screens for conferences, movies, and presentations.",
-      buttonText: "View Projectors",
+      buttonText: "View Equipment",
     },
     {
       title: "Catering Equipment",
       description: "Professional catering and buffet equipment for weddings and corporate events.",
-      buttonText: "View Catering Equipment",
+      buttonText: "View Equipment",
     },
     {
       title: "Photography & Videography",
       description: "Cameras, tripods, and accessories for professional event coverage.",
-      buttonText: "View Photography Gear",
+      buttonText: "View Equipment",
     },
     {
       title: "Tents & Canopies",
       description: "High-quality tents and canopies for outdoor events and exhibitions.",
-      buttonText: "View Tents",
+      buttonText: "View Equipment",
     },
     {
       title: "Furniture & Seating",
       description: "Luxury chairs, tables, and lounge seating for corporate events and weddings.",
-      buttonText: "View Event Furniture",
+      buttonText: "View Equipment",
     },
   ];
   
