@@ -21,7 +21,7 @@ const PremiumEvents = () => (
                 variants={fadeIn("right", "tween", 0.2, 1)}
                 className="relative flex-1 flex flex-col justify-center mt-5 items-center sm:p-6 p-2 rounded-[32px] border-[1px] border-[#6a6a6a] text-sm"
             >
-                <img src="visual.svg" alt="ring" />
+                <img src="ring.svg" alt="ring" />
                 <p>Own a piece of the experience with our NFT tickets. Buy, sell, and trade tickets on our marketplace, powered by Solana blockchain technology</p>
             </motion.div>
             <div className="-mt-5">
