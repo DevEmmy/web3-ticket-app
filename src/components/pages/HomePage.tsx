@@ -1,12 +1,15 @@
 import Nav from '@/components/widgets/Nav'
 import React from 'react'
-import Banner from '../widgets/homepage/Banner'
+import Banner from '@/components/widgets/homepage/Banner'
 import TopEvents from '../widgets/homepage/TopEvents'
 import EventInMyLocation from '../widgets/homepage/EventInMyLocation'
 import CategoryScroll from '../widgets/Categories'
 import EventSearch from '../widgets/EventSearch'
 import FloatingBalls from '../widgets/FloatingBalls'
 import Footer from '../widgets/Footer'
+import PremiumEvents from '../widgets/homepage/PremiumEvents'
+import InteractiveGamesSection  from '../widgets/homepage/EventGames'
+import RentalsSection from '../widgets/homepage/Rentals'
 
 const HomePage = () => {
   return (
@@ -16,8 +19,11 @@ const HomePage = () => {
       <Banner />
       <CategoryScroll />
       <EventSearch />
-      <TopEvents />
+      <PremiumEvents />
       <EventInMyLocation />
+      <TopEvents />
+      <RentalsSection />
+      <InteractiveGamesSection />
     </div>
   )
 }
