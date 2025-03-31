@@ -2,6 +2,21 @@
 
 import { useState, useEffect } from "react";
 import Button from "@/components/ui/Button";
+// Import Iconsax icons
+import { 
+  Activity, 
+  Timer1, 
+  StatusUp, 
+  Global, 
+  MagicStar, 
+  People,
+  Calendar, 
+  Ticket, 
+  Setting4, 
+  Chart, 
+  Monitor, 
+  Link21
+} from "iconsax-react";
 
 export default function AboutPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -14,44 +29,46 @@ export default function AboutPage() {
     {
       title: "Seamless Event Creation",
       desc: "Easily plan and organize events with intuitive tools that streamline the entire process.",
-      icon: "📅"
+      icon: <Calendar size="32" variant="Bold" color="#e9d5ff" />,
     },
     {
       title: "NFT Ticketing",
       desc: "Bring your events into the future with blockchain-powered digital ticketing solutions.",
-      icon: "🎫"
+      icon: <Ticket size="32" variant="Bold" color="#e9d5ff" />,
     },
     {
       title: "Customizable Options",
       desc: "Tailor events to your specific needs with various categories, features, and themes.",
-      icon: "⚙️"
+      icon: <Setting4 size="32" variant="Bold" color="#e9d5ff" />,
     },
     {
       title: "Real-Time Analytics",
       desc: "Stay informed with detailed insights on ticket sales, attendee engagement, and event performance.",
-      icon: "📊"
+      icon: <Chart size="32" variant="Bold" color="#e9d5ff" />,
     },
     {
       title: "User-Friendly Interface",
       desc: "Navigate effortlessly with a design that prioritizes simplicity without sacrificing functionality.",
-      icon: "🖥️"
+      icon: <Monitor size="32" variant="Bold" color="#e9d5ff" />,
     },
     {
       title: "Web3 Integration",
       desc: "Future-proof your events with blockchain technology and decentralized applications.",
-      icon: "🔗"
+      icon: <Link21 size="32" variant="Bold" color="#e9d5ff" />,
     },
   ];
 
   return (
-    <div className="bg-gradient-to-b from-black via-[#140121] to-[#1a0533] text-white min-h-screen">
+    <div className="bg-gradient-to-b from-black via-gray-900 to-[#140121] text-white min-h-screen">
       <div className="relative w-full h-[400px] md:h-[500px] overflow-hidden">
         <div className="absolute inset-0 bg-black/40 z-10"></div>
+        
         <img 
           src="/image.png" 
           alt="3D Cubes" 
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
+        
         <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center z-20 px-4">
           <h1 className={`text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             About Us
@@ -61,7 +78,9 @@ export default function AboutPage() {
           </p>
         </div>
       </div>
-      <div className="w-full h-1 bg-gradient-to-r from-black via-purple-900 to-purple-600 shadow-[0_0_15px_5px_rgba(147,51,234,0.5)]"></div>
+
+      <div className="w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-purple-500 shadow-[0_0_15px_5px_rgba(147,51,234,0.5)]"></div>
+
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">
           Our Mission
@@ -70,7 +89,7 @@ export default function AboutPage() {
           <div className="flex flex-col gap-6">
             <div className="flex gap-4 items-start">
               <div className="w-12 h-12 flex items-center justify-center bg-purple-600 rounded-lg shrink-0">
-                <span className="text-2xl">🚀</span>
+                <Activity size="28" variant="Bold" color="#ffffff" />
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-purple-200">Innovation at the Core</h3>
@@ -82,7 +101,7 @@ export default function AboutPage() {
             
             <div className="flex gap-4 items-start">
               <div className="w-12 h-12 flex items-center justify-center bg-blue-600 rounded-lg shrink-0">
-                <span className="text-2xl">⏱️</span>
+                <Timer1 size="28" variant="Bold" color="#ffffff" />
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-purple-200">Time-Saving Solutions</h3>
@@ -94,7 +113,7 @@ export default function AboutPage() {
             
             <div className="flex gap-4 items-start">
               <div className="w-12 h-12 flex items-center justify-center bg-indigo-600 rounded-lg shrink-0">
-                <span className="text-2xl">🔄</span>
+                <StatusUp size="28" variant="Bold" color="#ffffff" />
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-purple-200">Meaningful Connections</h3>
@@ -106,6 +125,7 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">
           Our Vision
@@ -113,7 +133,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-gradient-to-br from-purple-900/70 to-blue-900/70 rounded-xl p-6 shadow-[0_4px_20px_rgba(168,85,247,0.25)] border border-purple-500/30 backdrop-blur-sm transform transition-all duration-500 hover:translate-y-[-8px]">
             <div className="w-16 h-16 mb-4 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.5)]">
-              <span className="text-3xl">🌐</span>
+              <Global size="32" variant="Bold" color="#ffffff" />
             </div>
             <h3 className="text-xl font-bold mb-3 text-purple-200">Accessible For All</h3>
             <p className="text-gray-300">
@@ -123,7 +143,7 @@ export default function AboutPage() {
           
           <div className="bg-gradient-to-br from-purple-900/70 to-blue-900/70 rounded-xl p-6 shadow-[0_4px_20px_rgba(168,85,247,0.25)] border border-purple-500/30 backdrop-blur-sm transform transition-all duration-500 hover:translate-y-[-8px]">
             <div className="w-16 h-16 mb-4 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.5)]">
-              <span className="text-3xl">🔮</span>
+              <MagicStar size="32" variant="Bold" color="#ffffff" />
             </div>
             <h3 className="text-xl font-bold mb-3 text-purple-200">Future-Ready Platform</h3>
             <p className="text-gray-300">
@@ -133,7 +153,7 @@ export default function AboutPage() {
           
           <div className="bg-gradient-to-br from-purple-900/70 to-blue-900/70 rounded-xl p-6 shadow-[0_4px_20px_rgba(168,85,247,0.25)] border border-purple-500/30 backdrop-blur-sm transform transition-all duration-500 hover:translate-y-[-8px]">
             <div className="w-16 h-16 mb-4 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(168,85,247,0.5)]">
-              <span className="text-3xl">🤝</span>
+              <People size="32" variant="Bold" color="#ffffff" />
             </div>
             <h3 className="text-xl font-bold mb-3 text-purple-200">Inclusive Communities</h3>
             <p className="text-gray-300">
@@ -142,7 +162,9 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+
       <div className="w-full h-1 bg-gradient-to-r from-purple-500 via-blue-500 to-purple-500 shadow-[0_0_15px_5px_rgba(147,51,234,0.5)]"></div>
+
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16">
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">
           Why Choose Us?
@@ -154,13 +176,14 @@ export default function AboutPage() {
               key={index}
               className="bg-gradient-to-br from-purple-900/70 to-blue-900/70 rounded-xl p-6 shadow-[0_4px_20px_rgba(168,85,247,0.25)] border border-purple-500/30 backdrop-blur-sm transform transition-all duration-500 hover:translate-y-[-8px] hover:shadow-[0_8px_30px_rgba(168,85,247,0.4)]"
             >
-              <div className="text-4xl mb-4">{feature.icon}</div>
+              <div className="mb-4">{feature.icon}</div>
               <h3 className="text-xl font-bold mb-2 text-purple-200">{feature.title}</h3>
               <p className="text-gray-300">{feature.desc}</p>
             </div>
           ))}
         </div>
       </div>
+
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-16 text-center">
         <div className="bg-gradient-to-br from-purple-900/70 to-blue-900/70 rounded-xl p-8 md:p-12 shadow-[0_4px_20px_rgba(168,85,247,0.25)] border border-purple-500/30 backdrop-blur-sm">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to create your next event?</h2>
@@ -175,6 +198,8 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+
+ 
     </div>
   );
 }
