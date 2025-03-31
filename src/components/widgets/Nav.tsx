@@ -98,7 +98,7 @@ const Nav = () => {
         ...springTransition,
         duration: 0.8
       }}
-      className={`font-spaceGrotesk py-5 fixed top-0 left-0 w-full z-[999] mb-[80px] transition-all duration-500 
+      className={`font-spaceGrotesk py-5 fixed top-0 left-0 w-screen sm:w-full z-[999] mb-[80px] transition-all duration-500 
         ${isScrolled 
           ? 'shadow-md bg-transparent/70 backdrop-blur-lg before:content-[""] before:absolute before:inset-0 before:bg-gradient-to-b before:from-black before:via-black/10 before:to-transparent before:h-full before:pointer-events-none' 
           : 'bg-transparent backdrop-blur-sm'
@@ -143,7 +143,7 @@ const Nav = () => {
       </div>
 
       {/* Mobile */}
-      <div className="lg:hidden flex items-center justify-between mx-[5%]">
+      <div className="lg:hidden flex items-center justify-between mx-[5%] w-auto">
         <Link href="/">
           <motion.h2
             className="text-xl font-bold"
@@ -151,7 +151,9 @@ const Nav = () => {
             whileTap={{ scale: 0.9 }}
             transition={springTransition}
           >
+          <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text">
             EventFi
+          </span>
           </motion.h2>
         </Link>
 

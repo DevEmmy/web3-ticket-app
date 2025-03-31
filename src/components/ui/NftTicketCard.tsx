@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const NFTTicketCard = () => {
   return (
-    <div className="w-[380px]">
+    <div className="">
       <motion.div 
         className="w-full max-w-sm rounded-3xl bg-gray-900 p-5 border-2 border-purple-500 relative"
         initial={{ opacity: 0 }}
