@@ -1,0 +1,36 @@
+export const events = [
+    {
+      id: 1,
+      title: "Solana Event 2025",
+      tags: ["Solana", "NFT"],
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwBzcQt2uI-BHaUOo6zucN86WDdD75pOVmw&s",
+      location: "San Francisco",
+      date: "January 25, Wednesday",
+      time: "9PM WAT",
+      price: "Free",
+      attendees: 496,
+    },
+    {
+      id: 2,
+      title: "Ethereum Conference",
+      tags: ["Ethereum", "Blockchain"],
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwBzcQt2uI-BHaUOo6zucN86WDdD75pOVmw&s",
+      location: "New York",
+      date: "March 10, Sunday",
+      time: "6PM EST",
+      price: "0.9 sol",
+      attendees: 300,
+    },
+    {
+      id: 3,
+      title: "Web3 Summit",
+      tags: ["Web3", "DeFi"],
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBwBzcQt2uI-BHaUOo6zucN86WDdD75pOVmw&s",
+      location: "Berlin",
+      date: "April 15, Monday",
+      time: "3PM CET",
+      price: "Free",
+      attendees: 700,
+    },
+  ];
+  

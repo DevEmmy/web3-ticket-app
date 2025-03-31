@@ -1,6 +1,6 @@
 import EventCard from '@/components/ui/EventCard'
 import React from 'react'
-
+import { events } from '@/components/utils/constants'
 const BrowseEvents = () => {
   return (
     <div className='flex flex-col gap-3'>
@@ -8,9 +8,9 @@ const BrowseEvents = () => {
 
         <div className='grid grid-cols-3 gap-5'>
             {
-                [1,2,3,4,5].map((item, i)=>{
+                events.map((item, i)=>{
                     return(
-                        <EventCard key={i} />
+                        <EventCard key={i} event={item}/>
                     )
                 })
             }
