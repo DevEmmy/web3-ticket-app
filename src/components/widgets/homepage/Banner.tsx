@@ -1,5 +1,5 @@
-import Button from '@/components/ui/Button'
-import React from 'react'
+import Button from '@/components/ui/Button';
+import React from 'react';
 
 const Banner = () => {
   return (
@@ -11,6 +11,6 @@ const Banner = () => {
       </div>
     </div>
   )
-}
+};
 
-export default Banner
+export default Banner;
