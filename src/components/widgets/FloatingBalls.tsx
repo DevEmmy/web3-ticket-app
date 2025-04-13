@@ -12,15 +12,15 @@ const balls = [
 
 const FloatingBalls = () => {
   return (
-    <div className="fixed inset-0 overflow-hidden">
+    <div className="inset-0 overflow-hidden">
       {balls.map((ball, index) => (
         <motion.div
           key={index}
-          initial={{ x: ball.x, y: ball.y, opacity: 0.6, scale: 1 }}
+          initial={{ x: ball.x, y: ball.y, opacity: 0.4, scale: 1 }}
           animate={{
             x: [ball.x, ball.x + 50, ball.x - 50, ball.x],
             y: [ball.y, ball.y - 50, ball.y + 50, ball.y],
-            opacity: [0.6, 0.8, 0.6],
+            opacity: [0.4, 0.6, 0.4],
             scale: [1, 1.1, 1],
           }}
           transition={{

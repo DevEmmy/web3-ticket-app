@@ -6,6 +6,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey, Transaction, SystemProgram, Connection } from "@solana/web3.js";
 import { toast } from "react-hot-toast";
 import Button from "../ui/Button";
+import { Users } from "lucide-react";
 
 // Placeholder function to fetch event details (replace with API)
 const fetchEventBySlug = async (slug: string) => {
@@ -14,6 +15,9 @@ const fetchEventBySlug = async (slug: string) => {
     title: "Solana Hackathon",
     description: "Join us for an exciting Web3 hackathon and build the future of blockchain!",
     date: "2024-10-15",
+    time: "3PM EST",
+    attendees: 400,
+    tags: ["DeFi", "Solana"],
     location: "New York",
     price: 0.5, // SOL price
     image: "/images/hackathon.jpg",
@@ -106,8 +110,17 @@ export default function EventDetails() {
                 month: 'long',
                 day: 'numeric'
               })}</p>
+              <p className="text-gray-300">{event.time}</p>
             </div>
-
+            <div className="flex items-center gap-2 mt-1">
+              <Users className="w-4 h-4 text-gray-400" />
+              <div className="flex -space-x-2">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="w-6 h-6 rounded-full bg-gray-700 border border-black"></div>
+                ))}
+              </div>
+              <p className="text-xs text-gray-400">+{event.attendees} attending</p>
+            </div>
             {/* Ticket Purchase Section */}
             <div className="mt-6 bg-gray-900 p-4 rounded-lg flex flex-col justify-between h-auto">
               <div className="mb-4">
