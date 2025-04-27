@@ -129,3 +129,7 @@ form > input, select{
 .cflexes {
   @apply flex flex-col justify-end items-start;
 }
+
+input, textarea, select {
+  @apply !bg-transparent
+}

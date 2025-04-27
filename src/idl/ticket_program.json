@@ -16,15 +16,19 @@
       "accounts": [
         { "name": "event", "isMut": true, "isSigner": true },
         { "name": "organizer", "isMut": true, "isSigner": true },
-        { "name": "ticketMint", "isMut": true, "isSigner": false },
-        { "name": "systemProgram", "isMut": false, "isSigner": false }
+        { "name": "eventAuthority", "isMut": false, "isSigner": false },
+        { "name": "ticketMint", "isMut": true, "isSigner": true },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false }
       ],
       "args": [
         { "name": "name", "type": "string" },
         { "name": "description", "type": "string" },
         { "name": "date", "type": "i64" },
         { "name": "price", "type": "u64" },
-        { "name": "total", "type": "u64" }
+        { "name": "total", "type": "u64" },
+        { "name": "bump", "type": "u8" }
       ]
     },
     {
@@ -32,10 +36,17 @@
       "accounts": [
         { "name": "event", "isMut": true, "isSigner": false },
         { "name": "userProfile", "isMut": true, "isSigner": false },
+        { "name": "eventAuthority", "isMut": false, "isSigner": false },
         { "name": "ticketMint", "isMut": true, "isSigner": false },
         { "name": "ticketAccount", "isMut": true, "isSigner": false },
-        { "name": "organizer", "isMut": false, "isSigner": true },
-        { "name": "tokenProgram", "isMut": false, "isSigner": false }
+        { "name": "ticketRecord", "isMut": true, "isSigner": true },
+        { "name": "buyer", "isMut": true, "isSigner": true },
+        { "name": "authority", "isMut": false, "isSigner": false },
+        { "name": "organizer", "isMut": true, "isSigner": false },
+        { "name": "tokenProgram", "isMut": false, "isSigner": false },
+        { "name": "associatedTokenProgram", "isMut": false, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false }
       ],
       "args": []
     },
@@ -48,8 +59,22 @@
       "args": [
         { "name": "name", "type": { "option": "string" } },
         { "name": "description", "type": { "option": "string" } },
-        { "name": "date", "type": { "option": "i64" } }
+        { "name": "date", "type": { "option": "i64" } },
+        { "name": "price", "type": { "option": "u64" } }
       ]
+    },
+    {
+      "name": "cancelEvent",
+      "accounts": [
+        { "name": "event", "isMut": true, "isSigner": false },
+        { "name": "organizer", "isMut": true, "isSigner": true }
+      ],
+      "args": []
+    },
+    {
+      "name": "resellTicket",
+      "accounts": [{ "name": "ticketOwner", "isMut": false, "isSigner": true }],
+      "args": [{ "name": "price", "type": "u64" }]
     }
   ],
   "accounts": [
@@ -58,9 +83,9 @@
       "type": {
         "kind": "struct",
         "fields": [
-          { "name": "wallet", "type": "publicKey" },
+          { "name": "authority", "type": "publicKey" },
           { "name": "username", "type": "string" },
-          { "name": "tickets", "type": { "vec": "publicKey" } }
+          { "name": "ticketsCount", "type": "u32" }
         ]
       }
     },
@@ -76,14 +101,64 @@
           { "name": "ticketPrice", "type": "u64" },
           { "name": "totalTickets", "type": "u64" },
           { "name": "ticketsSold", "type": "u64" },
-          { "name": "ticketMint", "type": "publicKey" }
+          { "name": "ticketMint", "type": "publicKey" },
+          { "name": "bump", "type": "u8" }
+        ]
+      }
+    },
+    {
+      "name": "TicketRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "owner", "type": "publicKey" },
+          { "name": "event", "type": "publicKey" },
+          { "name": "purchaseDate", "type": "i64" },
+          { "name": "mint", "type": "publicKey" }
         ]
       }
     }
   ],
-
+  "errors": [
+    { "code": 6000, "name": "SoldOut", "msg": "Event is sold out." },
+    {
+      "code": 6001,
+      "name": "InvalidDate",
+      "msg": "Event date must be in the future."
+    },
+    {
+      "code": 6002,
+      "name": "CannotUpdateActiveEvent",
+      "msg": "Cannot update event after tickets have been sold."
+    },
+    {
+      "code": 6003,
+      "name": "CannotCancelActiveEvent",
+      "msg": "Cannot cancel event after tickets have been sold."
+    },
+    { "code": 6004, "name": "Unauthorized", "msg": "Unauthorized access." },
+    {
+      "code": 6005,
+      "name": "InsufficientPayment",
+      "msg": "Insufficient payment for ticket."
+    },
+    {
+      "code": 6006,
+      "name": "TooManyTickets",
+      "msg": "User has reached maximum ticket limit."
+    },
+    {
+      "code": 6007,
+      "name": "InvalidTicketCount",
+      "msg": "Invalid ticket count. Must be greater than zero."
+    },
+    {
+      "code": 6008,
+      "name": "EventEnded",
+      "msg": "The event has already ended."
+    }
+  ],
   "metadata": {
     "address": "ByuT7bBzcQu8SEpAM5V24CBudup9LFirwdxZHUGBHaBS"
-  },
-  "errors": [{ "code": 6000, "name": "SoldOut", "msg": "Event is sold out." }]
+  }
 }

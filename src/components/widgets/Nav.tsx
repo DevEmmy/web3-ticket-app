@@ -8,6 +8,7 @@ import Button from "../ui/Button";
 import WalletFormatter from "../utils/wallet-formatter";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useEventTicketing } from "@/hooks/useEventTicketing";
 
 const springTransition = {
   type: "spring",
@@ -88,7 +89,22 @@ const Nav = () => {
     },
   ];
 
+  const {registerUser} = useEventTicketing()
   const { publicKey, connect, disconnect } = useWallet();
+
+    useEffect(() => {
+      const handleRegister = async () => {
+        if (publicKey) {
+          console.log("Wallet connected. Attempting to register...");
+          await registerUser();
+        }
+        else{
+          console.log("no pk")
+        }
+      };
+  
+      handleRegister();
+    }, [ publicKey, connect]);
 
   return (
     <motion.div

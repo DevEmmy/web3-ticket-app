@@ -6,6 +6,7 @@ import Footer from "@/components/widgets/Footer";
 import { Toaster } from "react-hot-toast";
 import Script from "next/script";
 import { AnchorLayoutProvider } from "@/context/AnchorProvider";
+import { WalletContextProvider } from "@/context/WalletContextProvider";
 const spaceGro = Space_Grotesk({
   variable: "--font-space-gro",
   subsets: ["latin"],
@@ -33,12 +34,15 @@ export default function RootLayout({
       <body
         className={`${spaceGro.variable} ${dmSans.variable} antialiased`}
       >
-        <Wallet>
+        {/* <Wallet> */}
           {/* <AnchorLayoutProvider> */}
+          <WalletContextProvider>
             <Toaster />
             {children}
+          </WalletContextProvider>
+            
           {/* </AnchorLayoutProvider> */}
-        </Wallet>
+        {/* </Wallet> */}
       </body>
     </html>
   );
