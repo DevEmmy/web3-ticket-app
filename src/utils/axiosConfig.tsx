@@ -4,7 +4,6 @@ import { useAuthStore } from '@/store/useAuthStore';
 // Create axios instance
 const axiosInstance: AxiosInstance = axios.create({
     baseURL:  'https://eventfi-backend.onrender.com/api',
-    timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
     },
