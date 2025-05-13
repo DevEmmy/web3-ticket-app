@@ -1,4 +1,11 @@
+import React from 'react';
 import { Toaster } from 'react-hot-toast';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Join the Waitlist | EventFi',
+  description: 'Be among the first to experience the future of event ticketing. Join our waitlist for early access to our Web3-powered ticket platform.',
+};
 
 export default function WaitlistLayout({
   children,
