@@ -34,7 +34,8 @@ interface AnchorProviderProps {
   children: ReactNode;
 }
 
-export const AnchorLayoutProvider: FC<AnchorProviderProps> = ({ children }: ReactNode) => {
+//@ts-ignore
+export const AnchorLayoutProvider: FC<AnchorProviderProps> = ({ children }) => {
   const { wallet, publicKey, signTransaction } = useWallet();
   const { connection } = useConnection();
   const anchorWallet = useAnchorWallet();

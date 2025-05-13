@@ -2,9 +2,10 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 interface User {
-  id: string;
+  _id: string;
   walletAddress: string;
   profileImage: string;
+  username: string;
   // add other user properties as needed
 }
 

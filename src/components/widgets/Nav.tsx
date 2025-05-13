@@ -167,7 +167,7 @@ const Nav = () => {
             //   <WalletFormatter publicKey={publicKey.toString()} />
             // </Button>
             <div className="flex items-center gap-2">
-              <Image src={user?.profileImage} alt="" unoptimized width={80} height={80} />
+              <Image src={user?.profileImage as string} alt="" unoptimized width={80} height={80} />
               <div>
                 <p className="">{user?.username}</p>
                 <Link href="/dashboard" className="flex text-[12px] text-gray-400 underline items-center">

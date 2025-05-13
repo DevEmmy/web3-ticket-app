@@ -10,6 +10,7 @@ const TopEvents = () => {
                 {
                     events.map((item, i) => {
                         return (
+                            //@ts-ignore
                             <EventCard key={i} event={item} />
                         )
                     })

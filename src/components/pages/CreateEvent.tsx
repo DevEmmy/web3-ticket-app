@@ -52,6 +52,8 @@ const EventCreation = () => {
       twitter: "",
       instagram: "",
       discord: "",
+      telegram: "",
+      website: "",
     },
     walletAddress: "",
     mintNFT: false,

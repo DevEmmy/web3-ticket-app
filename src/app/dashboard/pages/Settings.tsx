@@ -18,7 +18,7 @@ import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { toastError, toastSuccess } from "@/utils/toast";
 
 const Settings = () => {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<any>({
     
   });
 
