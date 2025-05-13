@@ -9,7 +9,7 @@ import { QRCodeModal } from '@/components/ui/QRCodeModal';
 
 
 // Ticket type badge component
-const TicketTypeBadge = ({ type }) => {
+const TicketTypeBadge = ({ type }: { type: string }) => {
   const getBadgeColor = () => {
     switch (type.toLowerCase()) {
       case 'vip':
@@ -31,7 +31,7 @@ const TicketTypeBadge = ({ type }) => {
 };
 
 // Individual ticket card component
-const TicketCard = ({ ticket }) => {
+const TicketCard = ({ ticket }: { ticket: any }) => {
   const [showQRModal, setShowQRModal] = useState(false);
   const date = new Date(ticket.event.createdAt);
   const formattedDate = date.toLocaleDateString('en-US', {
