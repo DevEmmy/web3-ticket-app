@@ -4,6 +4,7 @@ import { persist } from 'zustand/middleware'
 interface User {
   id: string;
   walletAddress: string;
+  profileImage: string;
   // add other user properties as needed
 }
 

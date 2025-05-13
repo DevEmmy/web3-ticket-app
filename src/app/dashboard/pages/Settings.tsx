@@ -38,23 +38,23 @@ const Settings = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setProfileImage(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
 
   const { updateProfile, isUpdating, error, isSuccess } = useUpdateProfile();
 
   const handleSave = () => {
     const profileData = {
       ...form,
-      profileImage: profileImage || user.profileImage,
+      profileImage: profileImage || user?.profileImage,
     };
     updateProfile(profileData);
   };
@@ -87,7 +87,7 @@ const Settings = () => {
                 className="w-full h-full object-cover"
               />
             </div>
-            <label className="ml-4 mb-4 cursor-pointer flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-all">
+            {/* <label className="ml-4 mb-4 cursor-pointer flex items-center space-x-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-all">
               <Upload size={16} />
               <span>Upload</span>
               <input
@@ -96,7 +96,7 @@ const Settings = () => {
                 onChange={handleImageChange}
                 className="hidden"
               />
-            </label>
+            </label> */}
           </div>
         </div>
 
