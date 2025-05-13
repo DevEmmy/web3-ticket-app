@@ -20,8 +20,9 @@ export default function WaitlistPage() {
       const response = await axiosInstance.post("/waitlist/join", {email});
       setEmail('');
       toastSuccess("Thanks for joining our wailist")
-    } catch (error) {
-      toastError(error as string);
+    } catch (error: any) {
+      console.log(error)
+      toastError(error.response.data.message);
     } finally {
       setIsSubmitting(false);
     }
