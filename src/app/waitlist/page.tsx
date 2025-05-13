@@ -21,7 +21,7 @@ export default function WaitlistPage() {
       setEmail('');
       toastSuccess("Thanks for joining our wailist")
     } catch (error) {
-      toastError('Something went wrong. Please try again.');
+      toastError(error as string);
     } finally {
       setIsSubmitting(false);
     }
