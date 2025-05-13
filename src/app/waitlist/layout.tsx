@@ -5,6 +5,24 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Join the Waitlist | EventFi',
   description: 'Be among the first to experience the future of event ticketing. Join our waitlist for early access to our Web3-powered ticket platform.',
+  openGraph: {
+    title: 'Join the Waitlist | EventFi',
+    description: 'Be among the first to experience the future of event ticketing. Join our waitlist for early access to our Web3-powered ticket platform.',
+    images: [
+      {
+        url: '/waitlist.PNG',
+        width: 1200,
+        height: 630,
+        alt: 'EventFi Waitlist',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Join the Waitlist | EventFi',
+    description: 'Be among the first to experience the future of event ticketing. Join our waitlist for early access to our Web3-powered ticket platform.',
+    images: ['/waitlist.PNG'],
+  },
 };
 
 export default function WaitlistLayout({
