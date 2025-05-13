@@ -7,20 +7,47 @@ import { Calendar, MapPin, Users, Clock, Tag } from 'lucide-react';
 
 interface EventCardProps {
   event: {
-    id: number;
-    title: string;
-    tags: string[];
-    image: string;
-    location: string;
-    date: string;
-    time: string;
-    price: string;
-    attendees: number;
+    _id: string;
+    name: string;
+    description: string;
+    startDate: string;
+    endDate: string;
+    bannerUrl: string;
+    venue?: {
+      name: string;
+      city: string;
+      country: string;
+    };
+    ticketTiers: Array<{
+      price: number;
+    }>;
+    category?: string;
   };
 }
 
 const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const router = useRouter();
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
+  const formatTime = (date: string) => {
+    return new Date(date).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const getLowestPrice = () => {
+    if (!event.ticketTiers.length) return 'Free';
+    const lowestPrice = Math.min(...event.ticketTiers.map(tier => tier.price));
+    return lowestPrice === 0 ? 'Free' : `$${lowestPrice}`;
+  };
 
   return (
     <motion.div
@@ -33,26 +60,26 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
       }}
       transition={{ duration: 0.2 }}
     >
-      {/* Tags */}
-      <div className="flex gap-2 -mt-1 mb-1">
-        {event.tags.map((tag, index) => (
+      {/* Category Tag */}
+      {event.category && (
+        <div className="flex gap-2 -mt-1 mb-1">
           <motion.span
-            key={index}
             className="bg-primary text-white text-sm py-1 px-3 rounded-full"
             whileHover={{ scale: 1.05 }}
           >
-            {tag}
+            {event.category}
           </motion.span>
-        ))}
-      </div>
+        </div>
+      )}
 
       {/* Event Image */}
       <motion.div className="relative w-full h-48 rounded-2xl overflow-hidden">
         <Image
-          src={event.image}
-          alt={event.title}
+          src={event.bannerUrl || '/placeholder-event.jpg'}
+          alt={event.name}
           layout="fill"
           objectFit="cover"
+          unoptimized
           className="transition-all duration-500 hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
@@ -63,41 +90,32 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent"
         whileHover={{ scale: 1.01 }}
       >
-        {event.title}
+        {event.name}
       </motion.h2>
 
       {/* Event Details */}
       <div className="flex flex-col gap-2 text-gray-200">
-        <div className="flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-primary" />
-          <p className="text-sm">{event.location}</p>
-        </div>
+        {event.venue && (
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-primary" />
+            <p className="text-sm">{`${event.venue.city}, ${event.venue.country}`}</p>
+          </div>
+        )}
 
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-primary" />
-          <p className="text-sm">{event.date}</p>
+          <p className="text-sm">{formatDate(event.startDate)}</p>
         </div>
 
         <div className="flex items-center gap-2">
           <Clock className="w-4 h-4 text-primary" />
-          <p className="text-sm">{event.time}</p>
+          <p className="text-sm">{formatTime(event.startDate)}</p>
         </div>
 
         <div className="flex items-center gap-2">
           <Tag className="w-4 h-4 text-green-400" />
-          <p className="text-green-400 font-semibold">{event.price}</p>
+          <p className="text-green-400 font-semibold">From {getLowestPrice()}</p>
         </div>
-      </div>
-
-      {/* Attendees */}
-      <div className="flex items-center gap-2 mt-1">
-        <Users className="w-4 h-4 text-gray-400" />
-        <div className="flex -space-x-2">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="w-6 h-6 rounded-full bg-gray-700 border border-black"></div>
-          ))}
-        </div>
-        <p className="text-xs text-gray-400">+{event.attendees} attending</p>
       </div>
 
       {/* Get Ticket Button */}
@@ -106,7 +124,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         whileTap={{ scale: 0.98 }}
       >
         <button
-          onClick={() => router.push(`/events/${event.id}`)}
+          onClick={() => router.push(`/events/${event._id}`)}
           className="w-full text-center font-bold rounded-lg py-2 bg-primary hover:bg-purple-600 transition-colors duration-300"
         >
           Get Ticket

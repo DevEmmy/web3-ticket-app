@@ -1,400 +1,768 @@
 "use client";
-import { useState } from "react";
-import { MdCancel } from "react-icons/md";
 
-const CreateEvent = () => {
-  const [eventData, setEventData] = useState<{
-    name: string;
-    description: string;
-    category: string;
-    date: string;
-    type: string;
-    time: string;
-    link: string;
-    location: string;
-    gLink: string;
-    price: string;
-    currency: string;
-    maxAttendees: string;
-    organizerName: string;
-    organizerEmail: string;
-    organizerPhone: string;
-    image: File | null; // Allow File or null
-    mintAsNFT: boolean;
-  }>({
+import { useState } from "react";
+import { 
+  Calendar, 
+  Clock, 
+  MapPin, 
+  Link, 
+  Tag, 
+  Globe, 
+  Hash, 
+  Ticket, 
+  Image, 
+  Twitter, 
+  Instagram, 
+  MessageCircle, 
+  ChevronRight, 
+  ChevronLeft, 
+  Info, 
+  Check, 
+  Wallet,
+  Plus,
+  DollarSign
+} from "lucide-react";
+import { FaDiscord, FaTelegram, FaTwitter } from "react-icons/fa";
+import { useCreateEvent } from '@/hooks/useCreateEvent';
+
+const EventCreation = () => {
+  const [step, setStep] = useState(1);
+  const totalSteps = 4;
+  
+  const [formData, setFormData] = useState({
     name: "",
     description: "",
     category: "",
-    date: "",
-    type: "",
-    time: "",
-    link: "",
-    location: "",
-    gLink: "",
-    price: "",
-    currency: "",
-    maxAttendees: "",
-    organizerName: "",
-    organizerEmail: "",
-    organizerPhone: "",
-    image: null,
-    mintAsNFT: false,
+    tags: "",
+    startDate: "",
+    endDate: "",
+    timezone: "UTC",
+    eventType: "in-person",
+    venue: {
+      name: "",
+      address: "",
+      city: "",
+      country: "",
+    },
+    onlineUrl: "",
+    ticketTiers: [{ name: "General Admission", price: 0, quantity: 100, tokenGated: false, requiredToken: "" }],
+    isFree: true,
+    bannerUrl: "",
+    socialLinks: {
+      twitter: "",
+      instagram: "",
+      discord: "",
+    },
+    walletAddress: "",
+    mintNFT: false,
+    allowCrypto: true,
+    acceptedTokens: ["ETH", "USDC"]
   });
 
-  const [eventImage, setEventImage] = useState<any>("");
+  const { createEvent, isCreating, error } = useCreateEvent();
 
-  const getMimeType = (base64String: any) => {
-    const match = base64String.match(/^data:(.+);base64,/);
-    return match ? match[1] : null;
+  const nextStep = () => {
+    window.scrollTo(0, 0);
+    setStep(Math.min(step + 1, totalSteps));
+  };
+  
+  const prevStep = () => {
+    window.scrollTo(0, 0);
+    setStep(Math.max(step - 1, 1));
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    setEventData({ ...eventData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Event Created:", eventData);
-  };
-
-  const getAllCurrencies = () => {
-    const currencies = new Set(Intl.supportedValuesOf("currency"));
-    return Array.from(currencies).map((code) => ({
-      code,
-      symbol: new Intl.NumberFormat(undefined, {
-        style: "currency",
-        currency: code,
-      })
-        .formatToParts(0)
-        .find((part) => part.type === "currency")?.value,
-      name: new Intl.DisplayNames(["en"], { type: "currency" }).of(code),
+  const updateForm = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : "";
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        const fileType = getMimeType(reader.result);
-        if (
-          fileType === "image/png" ||
-          fileType === "image/jpg" ||
-          fileType === "image/jpeg" ||
-          fileType === "image/jfif"
-        ) {
-          setEventData({
-            ...eventData,
-            image: file,
-          });
-          setEventImage(reader.result);
-        }
-      };
-      reader.onerror = (error) => {
-        setEventData({
-          ...eventData,
-          image: null,
-        });
-        console.error("Error converting file: ", error);
-      };
+  const updateTicketTier = (index, field, value) => {
+    const updatedTiers = [...formData.ticketTiers];
+    updatedTiers[index][field] = value;
+    updateForm("ticketTiers", updatedTiers);
+  };
+
+  const addTicketTier = () => {
+    updateForm("ticketTiers", [
+      ...formData.ticketTiers,
+      { name: "", price: 0, quantity: 0, tokenGated: false, requiredToken: "" },
+    ]);
+  };
+
+  const removeTicketTier = (index) => {
+    const updatedTiers = formData.ticketTiers.filter((_, i) => i !== index);
+    updateForm("ticketTiers", updatedTiers);
+  };
+
+  const toggleTokenAcceptance = (token) => {
+    if (formData.acceptedTokens.includes(token)) {
+      updateForm("acceptedTokens", formData.acceptedTokens.filter(t => t !== token));
+    } else {
+      updateForm("acceptedTokens", [...formData.acceptedTokens, token]);
     }
   };
 
+  const handleSubmit = () => {
+    createEvent(formData);
+  };
+
+  // Calculate progress percentage
+  const progressPercentage = (step / totalSteps) * 100;
+
   return (
-    <div className="p-6 w-3/4 mx-auto">
-      <h1 className="text-2xl font-bold text-white mb-4">Create New Event</h1>
-
-      <form
-        onSubmit={handleSubmit}
-        className="h-full bg-gray-800 p-6 rounded-lg grid grid-cols-2items-start gap-7"
-      >
-        {/* Event Name */}
-        <div className="w-full">
-          <label className="block text-white">Event Name</label>
-          <input
-            type="text"
-            name="name"
-            value={eventData.name}
-            onChange={handleChange}
-            className="w-full p-2 bg-gray-700 rounded"
-            required
-          />
-        </div>
-
-        {/* Category */}
-        <div className="w-full">
-          <label className="block text-white">Category</label>
-          <select
-            name="category"
-            value={eventData.category}
-            onChange={handleChange}
-            className="w-full p-2 bg-gray-700 rounded"
-            required
-          >
-            <option value="">Select Category</option>
-            <option value="music">Music</option>
-            <option value="tech">Tech</option>
-            <option value="sports">Sports</option>
-          </select>
-        </div>
-
-        {/* Date & Time */}
-        <div className="gap-5 col-span-2 grid grid-cols-3">
-          <div>
-            <label className="block text-white">Date</label>
-            <input
-              type="date"
-              name="date"
-              value={eventData.date}
-              onChange={handleChange}
-              className="w-full p-2 bg-gray-700 rounded"
-              required
-            />
+    <div className="min-h-screen  py-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header and progress tracker */}
+        <div className="mb-8 text-center">
+          <div className="inline-block px-4 py-1 bg-purple-800 bg-opacity-50 rounded-full text-purple-300 text-sm font-medium mb-4">
+            Step {step} of {totalSteps}
           </div>
-
-          <div>
-            <label className="block text-white">Time</label>
-            <input
-              type="time"
-              name="time"
-              value={eventData.time}
-              onChange={handleChange}
-              className="w-full p-2 bg-gray-700 rounded"
-              required
-            />
+          <h1 className="text-3xl font-bold text-white mb-6">Create Your Web3 Event</h1>
+          
+          {/* Progress bar */}
+          <div className="w-full bg-gray-800 rounded-full h-2.5 mb-6">
+            <div 
+              className="bg-gradient-to-r from-blue-500 to-purple-600 h-2.5 rounded-full transition-all duration-300 ease-out" 
+              style={{ width: `${progressPercentage}%` }}
+            ></div>
           </div>
-
-          {/* Event Type */}
-          <div>
-            <label className="block text-white">Event Type</label>
-            <select
-              name="type"
-              value={eventData.type}
-              onChange={handleChange}
-              className="w-full p-2 bg-gray-700 rounded"
-              required
-            >
-              <option value="">Select Type</option>
-              <option value="physical">Physical</option>
-              <option value="online">Online</option>
-            </select>
+          
+          {/* Step labels */}
+          <div className="flex justify-between text-xs text-gray-400 px-2">
+            <div className={step >= 1 ? "text-purple-400" : ""}>Event Info</div>
+            <div className={step >= 2 ? "text-purple-400" : ""}>Schedule</div>
+            <div className={step >= 3 ? "text-purple-400" : ""}>Tickets</div>
+            {/* <div className={step >= 4 ? "text-purple-400" : ""}>Web3 Options</div> */}
+            <div className={step >= 4 ? "text-purple-400" : ""}>Finalize</div>
           </div>
         </div>
 
-        {/* If Physical or Online */}
-
-        {eventData.type === "online" && (
-          <div className="gap-5 col-span-2 grid grid-cols-1">
-            <div>
-              <label className="block text-white">Meeting Link</label>
-              <input
-                type="link"
-                name="link"
-                value={eventData.link}
-                onChange={handleChange}
-                className="w-full p-2 bg-gray-700 rounded"
-                required
-              />
-            </div>
-          </div>
-        )}
-
-        {eventData.type === "physical" && (
-          <>
-            <div className="gap-5 col-span-2 grid grid-cols-2">
-              <div>
-                <label className="block text-white">Event Location</label>
-                <input
-                  type="text"
-                  name="location"
-                  value={eventData.location}
-                  onChange={handleChange}
-                  className="w-full p-2 bg-gray-700 rounded"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-white">
-                  Google Maps Link (Optional)
-                </label>
-                <input
-                  type="text"
-                  name="gLink"
-                  value={eventData.gLink}
-                  onChange={handleChange}
-                  className="w-full p-2 bg-gray-700 rounded"
-                />
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Ticket Pricing */}
-
-        <div className="gap-5 col-span-2 grid grid-cols-2">
-          <div>
-            <label className="block text-white">
-              Ticket Price (Leave blank if free)
-            </label>
-            <div className="flex justify-start items-center gap-[10px]">
-              <input
-                type="number"
-                name="price"
-                placeholder="Amount"
-                value={eventData.price}
-                onChange={handleChange}
-                className="w-full p-2 bg-gray-700 rounded"
-              />
-              <select
-                name="currency"
-                value={eventData.currency}
-                onChange={handleChange}
-                className="w-full p-2 bg-gray-700 rounded"
-              >
-                <option>Currency</option>
-                {getAllCurrencies().map((currency) => (
-                  <option value={currency.code}>{currency.code}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div>
-            <label className="block text-white">Max Attendees (Optional)</label>
-            <input
-              type="number"
-              name="maxAttendees"
-              value={eventData.maxAttendees}
-              onChange={handleChange}
-              className="w-full p-2 bg-gray-700 rounded"
-            />
-          </div>
-        </div>
-
-        <div className="gap-5 col-span-2 grid grid-cols-3">
-          {/* Organizer Info */}
-          <div>
-            <label className="block text-white">Organizer Name</label>
-            <input
-              type="text"
-              name="organizerName"
-              placeholder="Name"
-              value={eventData.organizerName}
-              onChange={handleChange}
-              className="w-full p-2 bg-gray-700 rounded"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-white">Organizer Email</label>
-            <input
-              type="email"
-              name="organizerEmail"
-              placeholder="Email"
-              value={eventData.organizerEmail}
-              onChange={handleChange}
-              className="w-full p-2 bg-gray-700 rounded"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-white">Organizer Phone</label>
-            <input
-              type="number"
-              name="organizerPhone"
-              placeholder="Phone"
-              value={eventData.organizerPhone}
-              onChange={handleChange}
-              className="w-full p-2 bg-gray-700 rounded"
-              required
-            />
-          </div>
-        </div>
-
-        <div className="gap-5 col-span-2 grid grid-cols-2">
-          {/* Upload Image */}
-          <div className="flex flex-col items-start justify-center gap-[2px]">
-            <div className="w-full flex justify-start items-center ">
-              <label className="block text-white">Event Image</label>
-            </div>
-            {eventData.image ? (
-              <div className="relative w-full h-[200px] rounded flex items-center justify-center">
-                <img
-                  src={eventImage}
-                  alt="event-image"
-                  className="w-full h-full rounded"
-                />
-                <MdCancel
-                  size={25}
-                  className="absolute top-[5px] right-[5px] cursor-pointer"
-                  onClick={() => {
-                    setEventData({
-                      ...eventData,
-                      image: null,
-                    });
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="relative w-full p-2 h-[200px] bg-gray-700 rounded flex items-center justify-center border border-dashed border-primary">
-                Click to upload, or drag and drop here.
-                <div className="absolute flex flex-col items-center justify-center top-0 left-0">
-                  {[1, 2, 3, 4, 5].map((items, index) => {
-                    return (
+        {/* Main card */}
+        <div className="bg-gray-900 bg-opacity-80 backdrop-blur-md rounded-2xl shadow-2xl border border-purple-500/20 overflow-hidden">
+          
+          {/* Form content */}
+          <div className="p-8">
+          
+            {/* Step 1: Basic Info */}
+            {step === 1 && (
+              <div className="space-y-6">
+                <h2 className="text-xl font-bold text-white flex items-center">
+                  <Info className="mr-2 text-purple-400" size={20} />
+                  Event Details
+                </h2>
+                
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm text-gray-300 mb-1 block">Event Name</label>
+                    <div className="relative">
                       <input
-                        key={index}
-                        name="cover"
-                        type="file"
-                        onChange={handleFileChange}
-                        className="p-2 opacity-0"
+                        type="text"
+                        placeholder="Web3 Community Meetup"
+                        className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                        value={formData.name}
+                        onChange={(e) => updateForm("name", e.target.value)}
                       />
-                    );
-                  })}
+                      <Tag className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm text-gray-300 mb-1 block">Description</label>
+                    <div className="relative">
+                      <textarea
+                        placeholder="Share details about your event..."
+                        className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                        rows={4}
+                        value={formData.description}
+                        onChange={(e) => updateForm("description", e.target.value)}
+                      />
+                      <Info className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm text-gray-300 mb-1 block">Category</label>
+                      <div className="relative">
+                        <select
+                          className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                          value={formData.category}
+                          onChange={(e) => updateForm("category", e.target.value)}
+                        >
+                          <option value="">Select a category</option>
+                          <option value="conference">Conference</option>
+                          <option value="workshop">Workshop</option>
+                          <option value="hackathon">Hackathon</option>
+                          <option value="networking">Networking</option>
+                          <option value="ama">AMA Session</option>
+                          <option value="launch">Product Launch</option>
+                          <option value="other">Other</option>
+                        </select>
+                        <Hash className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm text-gray-300 mb-1 block">Tags</label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="nft, defi, dao, ethereum"
+                          className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                          value={formData.tags}
+                          onChange={(e) => updateForm("tags", e.target.value)}
+                        />
+                        <Tag className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2">
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {formData.tags && formData.tags.split(',').map((tag, i) => (
+                        tag.trim() && (
+                          <span key={i} className="bg-purple-900/50 text-purple-300 text-xs font-medium px-2.5 py-1 rounded">
+                            #{tag.trim()}
+                          </span>
+                        )
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
-          </div>
+            
+            {/* Step 2: Scheduling */}
+            {step === 2 && (
+              <div className="space-y-6">
+                <h2 className="text-xl font-bold text-white flex items-center">
+                  <Calendar className="mr-2 text-purple-400" size={20} />
+                  Event Schedule & Location
+                </h2>
+                
+                <div className="space-y-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm text-gray-300 mb-1 block">Start Date & Time</label>
+                      <div className="relative">
+                        <input
+                          type="datetime-local"
+                          className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                          value={formData.startDate}
+                          onChange={(e) => updateForm("startDate", e.target.value)}
+                        />
+                        <Calendar className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label className="text-sm text-gray-300 mb-1 block">End Date & Time</label>
+                      <div className="relative">
+                        <input
+                          type="datetime-local"
+                          className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                          value={formData.endDate}
+                          onChange={(e) => updateForm("endDate", e.target.value)}
+                        />
+                        <Calendar className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm text-gray-300 mb-1 block">Timezone</label>
+                    <div className="relative">
+                      <select
+                        className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                        value={formData.timezone}
+                        onChange={(e) => updateForm("timezone", e.target.value)}
+                      >
+                        <option value="UTC">UTC</option>
+                        <option value="GMT-8">Pacific Time (GMT-8)</option>
+                        <option value="GMT-5">Eastern Time (GMT-5)</option>
+                        <option value="GMT+1">Central European Time (GMT+1)</option>
+                        <option value="GMT+8">China/Singapore (GMT+8)</option>
+                        <option value="GMT+9">Japan/Korea (GMT+9)</option>
+                        <option value="GMT+5:30">India (GMT+5:30)</option>
+                      </select>
+                      <Globe className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm text-gray-300 mb-1 block">Event Type</label>
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        type="button"
+                        className={`px-4 py-2 rounded-lg flex items-center gap-2 border ${
+                          formData.eventType === "in-person"
+                            ? "bg-purple-800/50 border-purple-500 text-white"
+                            : "border-gray-700 text-gray-300 hover:border-gray-600"
+                        }`}
+                        onClick={() => updateForm("eventType", "in-person")}
+                      >
+                        <MapPin size={16} />
+                        In-person
+                      </button>
+                      
+                      <button
+                        type="button"
+                        className={`px-4 py-2 rounded-lg flex items-center gap-2 border ${
+                          formData.eventType === "online"
+                            ? "bg-purple-800/50 border-purple-500 text-white"
+                            : "border-gray-700 text-gray-300 hover:border-gray-600"
+                        }`}
+                        onClick={() => updateForm("eventType", "online")}
+                      >
+                        <Globe size={16} />
+                        Online
+                      </button>
+                      
+                      <button
+                        type="button"
+                        className={`px-4 py-2 rounded-lg flex items-center gap-2 border ${
+                          formData.eventType === "hybrid"
+                            ? "bg-purple-800/50 border-purple-500 text-white"
+                            : "border-gray-700 text-gray-300 hover:border-gray-600"
+                        }`}
+                        onClick={() => updateForm("eventType", "hybrid")}
+                      >
+                        <Link size={16} />
+                        Hybrid
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Show venue fields if in-person or hybrid */}
+                  {formData.eventType !== "online" && (
+                    <div className="border border-gray-800 rounded-lg p-4 bg-gray-800/50 space-y-4">
+                      <h3 className="text-white font-medium flex items-center">
+                        <MapPin className="mr-2 text-purple-400" size={16} />
+                        Venue Information
+                      </h3>
+                      
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="Venue Name"
+                          className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                          value={formData.venue.name}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              venue: { ...formData.venue, name: e.target.value },
+                            })
+                          }
+                        />
+                      </div>
+                      
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="Address"
+                          className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                          value={formData.venue.address}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              venue: { ...formData.venue, address: e.target.value },
+                            })
+                          }
+                        />
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <input
+                            type="text"
+                            placeholder="City"
+                            className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                            value={formData.venue.city}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                venue: { ...formData.venue, city: e.target.value },
+                              })
+                            }
+                          />
+                        </div>
+                        
+                        <div>
+                          <input
+                            type="text"
+                            placeholder="Country"
+                            className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                            value={formData.venue.country}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                venue: { ...formData.venue, country: e.target.value },
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Show URL field if online or hybrid */}
+                  {formData.eventType !== "in-person" && (
+                    <div className="border border-gray-800 rounded-lg p-4 bg-gray-800/50">
+                      <h3 className="text-white font-medium flex items-center mb-4">
+                        <Link className="mr-2 text-purple-400" size={16} />
+                        Online Information
+                      </h3>
+                      
+                      <div className="relative">
+                        <input
+                          type="url"
+                          placeholder="Meeting URL (Zoom, Google Meet, etc.)"
+                          className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                          value={formData.onlineUrl}
+                          onChange={(e) => updateForm("onlineUrl", e.target.value)}
+                        />
+                        <Link className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* Step 3: Tickets */}
+            {step === 3 && (
+              <div className="space-y-6">
+                <h2 className="text-xl font-bold text-white flex items-center">
+                  <Ticket className="mr-2 text-purple-400" size={20} />
+                  Ticket Information
+                </h2>
+                
+                <div className="space-y-5">
+                  <div className="flex items-center space-x-2">
+                    <label className="flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox h-5 w-5 text-purple-500 rounded border-gray-700 focus:ring-purple-500"
+                        checked={formData.isFree}
+                        onChange={() => updateForm("isFree", !formData.isFree)}
+                      />
+                      <span className="ml-2 text-white">This is a free event</span>
+                    </label>
+                  </div>
+                  
+                  {!formData.isFree && (
+                    <div className="space-y-4">
+                      {formData.ticketTiers.map((tier, index) => (
+                        <div key={index} className="bg-gray-800/80 p-5 rounded-lg border border-gray-700 space-y-4 relative">
+                          {formData.ticketTiers.length > 1 && (
+                            <button
+                              type="button"
+                              className="absolute top-3 right-3 text-gray-400 hover:text-red-400"
+                              onClick={() => removeTicketTier(index)}
+                            >
+                              ×
+                            </button>
+                          )}
+                          
+                          <h3 className="font-medium text-white">Ticket Tier {index + 1}</h3>
+                          
+                          <div>
+                            <label className="text-xs text-gray-400 mb-1 block">Name</label>
+                            <input
+                              type="text"
+                              placeholder="VIP, Early Bird, etc."
+                              className="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                              value={tier.name}
+                              onChange={(e) => updateTicketTier(index, "name", e.target.value)}
+                            />
+                          </div>
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <label className="text-xs text-gray-400 mb-1 block">Price</label>
+                              <div className="relative">
+                                <input
+                                  type="number"
+                                  placeholder="0.00"
+                                  className="w-full p-3 pl-8 rounded-lg bg-gray-700 border border-gray-600 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                  value={tier.price}
+                                  onChange={(e) => updateTicketTier(index, "price", Number(e.target.value))}
+                                />
+                                <DollarSign className="absolute left-2.5 top-3.5 text-gray-400" size={16} />
+                              </div>
+                            </div>
+                            
+                            <div>
+                              <label className="text-xs text-gray-400 mb-1 block">Quantity</label>
+                              <input
+                                type="number"
+                                placeholder="100"
+                                className="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                value={tier.quantity}
+                                onChange={(e) => updateTicketTier(index, "quantity", Number(e.target.value))}
+                              />
+                            </div>
+                          </div>
+                          
+                          {/* <div>
+                            <label className="flex items-center cursor-pointer">
+                              <input
+                                type="checkbox"
+                                className="form-checkbox h-4 w-4 text-purple-500 rounded border-gray-600 focus:ring-purple-500"
+                                checked={tier.tokenGated}
+                                onChange={(e) => updateTicketTier(index, "tokenGated", e.target.checked)}
+                              />
+                              <span className="ml-2 text-white text-sm">Token-gated access</span>
+                            </label>
+                            
+                            {tier.tokenGated && (
+                              <div className="mt-3">
+                                <input
+                                  type="text"
+                                  placeholder="NFT Collection Address or Token Contract"
+                                  className="w-full p-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                  value={tier.requiredToken}
+                                  onChange={(e) => updateTicketTier(index, "requiredToken", e.target.value)}
+                                />
+                              </div>
+                            )}
+                          </div> */}
+                        </div>
+                      ))}
+                      
+                      <button
+                        type="button"
+                        className="flex items-center gap-2 text-sm font-medium text-purple-400 hover:text-purple-300 mt-2"
+                        onClick={addTicketTier}
+                      >
+                        <Plus size={16} />
+                        Add Another Ticket Tier
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* Step 4: Web3 Options */}
+            {/* {step === 4 && (
+              <div className="space-y-6">
+                <h2 className="text-xl font-bold text-white flex items-center">
+                  <Wallet className="mr-2 text-purple-400" size={20} />
+                  Web3 Options
+                </h2>
+                
+                <div className="space-y-5">
+                  <div className="border border-gray-800 rounded-lg p-4 bg-gray-800/50">
+                    <h3 className="text-white font-medium mb-4">Payment Options</h3>
+                    
+                    <div className="space-y-4">
+                      <label className="flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="form-checkbox h-5 w-5 text-purple-500 rounded border-gray-700 focus:ring-purple-500"
+                          checked={formData.allowCrypto}
+                          onChange={() => updateForm("allowCrypto", !formData.allowCrypto)}
+                        />
+                        <span className="ml-2 text-white">Accept cryptocurrency payments</span>
+                      </label>
+                      
+                      {formData.allowCrypto && (
+                        <div className="pl-7">
+                          <p className="text-sm text-gray-400 mb-2">Select accepted tokens:</p>
+                          <div className="flex flex-wrap gap-2">
+                            {["ETH", "USDC", "DAI", "MATIC", "SOL", "BNB"].map((token) => (
+                              <button
+                                key={token}
+                                type="button"
+                                className={`px-3 py-1.5 rounded text-sm ${
+                                  formData.acceptedTokens.includes(token)
+                                    ? "bg-purple-800 text-white"
+                                    : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                                }`}
+                                onClick={() => toggleTokenAcceptance(token)}
+                              >
+                                {token}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="border border-gray-800 rounded-lg p-4 bg-gray-800/50">
+                    <h3 className="text-white font-medium mb-4">Web3 Features</h3>
+                    
+                    <div className="space-y-4">
+                      <label className="flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="form-checkbox h-5 w-5 text-purple-500 rounded border-gray-700 focus:ring-purple-500"
+                          checked={formData.mintNFT}
+                          onChange={() => updateForm("mintNFT", !formData.mintNFT)}
+                        />
+                        <span className="ml-2 text-white">Mint attendance NFT for participants</span>
+                      </label>
+                      
+                      <div>
+                        <label className="text-sm text-gray-300 mb-1 block">Creator Wallet Address</label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="0x..."
+                            className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 font-mono"
+                            value={formData.walletAddress}
+                            onChange={(e) => updateForm("walletAddress", e.target.value)}
+                          />
+                          <Wallet className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">This wallet will receive funds from ticket sales</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )} */}
+            
+            {/* Step 5: Finalize */}
+            {step === 4 && (
+              <div className="space-y-6">
+                <h2 className="text-xl font-bold text-white flex items-center">
+                  <Check className="mr-2 text-purple-400" size={20} />
+                  Finalize Your Event
+                </h2>
+                
+                <div className="space-y-5">
+                  <div className="border border-gray-800 rounded-lg p-4 bg-gray-800/50">
+                    <h3 className="text-white font-medium mb-4">Event Banner</h3>
+                    
+                    <div className="relative">
+                      <input
+                        type="url"
+                        placeholder="Banner Image URL"
+                        className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                        value={formData.bannerUrl}
+                        onChange={(e) => updateForm("bannerUrl", e.target.value)}
+                      />
+                      <Image className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                    </div>
+                    
+                    {formData.bannerUrl && (
+                      <img src={formData.bannerUrl} alt="Banner Preview" className="mt-4 rounded-lg w-full h-auto" />
+                    )}
+                  </div>
+                  
+                  <div className="border border-gray-800 rounded-lg p-4 bg-gray-800/50">
+                    <h3 className="text-white font-medium mb-4">Social Media Links</h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm text-gray-300 mb-1 block">Twitter</label>
+                        <div className="relative">
+                          <input
+                            type="url"
+                            placeholder="https://twitter.com/your_event"
+                            className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                            value={formData.socialLinks.twitter}
+                            onChange={(e) => updateForm("socialLinks", { ...formData.socialLinks, twitter: e.target.value })}
+                          />
+                          <FaTwitter className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-300 mb-1 block">Discord</label>
+                        <div className="relative">
+                          <input
+                            type="url"
+                            placeholder="https://discord.gg/your_event"
+                            className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                            value={formData.socialLinks.discord}
+                            onChange={(e) => updateForm("socialLinks", { ...formData.socialLinks, discord: e.target.value })}
+                          />
+                          <FaDiscord className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-300 mb-1 block">Telegram</label>
+                        <div className="relative">
+                          <input
+                            type="url"
+                            placeholder="https://t.me/your_event"
+                            className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                            value={formData.socialLinks.telegram}
+                            onChange={(e) => updateForm("socialLinks", { ...formData.socialLinks, telegram: e.target.value })}
+                          />
+                          <FaTelegram className="absolute left-3 top-3.5 text-gray-400" size={16} />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-300 mb-1 block">Website</label>
+                        <div className="relative">
+                          <input
+                            type="url"
+                            placeholder="https://your_event.com"
+                            className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-700 text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                            value={formData.socialLinks.website}
+                            onChange={(e) => updateForm("socialLinks", { ...formData.socialLinks, website: e.target.value })}
+                          />
+                          <Link className="absolute left-3 top-3.5 text-gray-400" size={16} />  
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
-          {/* Description */}
-          <div className="flex flex-col items-start justify-center gap-[2px]">
-            <label className="block text-white">Description</label>
-            <textarea
-              name="description"
-              value={eventData.description}
-              onChange={handleChange}
-              className="w-full p-2 bg-gray-700 h-[200px] rounded"
-              required
-            />
+            {/* Navigation Buttons */}
+            <div className="flex justify-between mt-8">
+              <button
+                type="button"
+                className="text-sm text-gray-400 hover:text-gray-300"
+                onClick={prevStep}
+                disabled={step === 1}
+              >
+                Back
+              </button>
+              {step === 4 ? (
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={isCreating}
+                  className="flex items-center space-x-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-2 rounded-lg text-white font-medium"
+                >
+                  {isCreating ? (
+                    <span>Creating...</span>
+                  ) : (
+                    <>
+                      <Check size={18} />
+                      <span>Create Event</span>
+                    </>
+                  )}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="text-sm text-gray-400 hover:text-gray-300" 
+                  onClick={nextStep}
+                >
+                  Next
+                </button>
+              )}
+            </div>
+            {error && (
+              <p className="mt-4 text-red-500 text-sm">
+                {error instanceof Error ? error.message : 'Failed to create event'}
+              </p>
+            )}
           </div>
         </div>
-
-        {/* Mint as NFT */}
-        <div className="flex items-center col-span-2">
-          <input
-            type="checkbox"
-            checked={eventData.mintAsNFT}
-            onChange={() =>
-              setEventData({ ...eventData, mintAsNFT: !eventData.mintAsNFT })
-            }
-          />
-          <label className="ml-2 text-white">Mint Tickets as NFTs</label>
-        </div>
-
-        <button
-          type="submit"
-          className="col-span-2 bg-primary px-4 py-2 rounded text-white w-full"
-        >
-          Create Event
-        </button>
-      </form>
+      </div>
     </div>
   );
 };
 
-export default CreateEvent;
+export default EventCreation

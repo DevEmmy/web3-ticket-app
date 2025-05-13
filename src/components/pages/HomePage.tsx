@@ -20,7 +20,7 @@ const HomePage = () => {
       <EventSearch />
       <PremiumEvents />
       <EventInMyLocation />
-      <TopEvents />
+      {/* <TopEvents /> */}
       <RentalsSection />
       <InteractiveGamesSection />
     </div>

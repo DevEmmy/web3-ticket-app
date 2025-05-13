@@ -1,9 +1,9 @@
 import React from 'react'
-import DashboardTickets from '../pages/DashboardTickets'
+import TicketsDashboard from '../pages/DashboardTickets'
 
 const page = () => {
   return (
-    <DashboardTickets />
+    <TicketsDashboard />
   )
 }
 
